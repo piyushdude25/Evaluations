@@ -7,38 +7,135 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Vaccination System</h1>
-   
+    <div id="left">
+      <h1>Registration</h1>
+      <form>
         <lable for="" class="text">Unique ID: </lable>
-        <input id="Uid" type="text" placeholder="enter ID" class="inBox">
+        <input id="uid" type="text" placeholder="enter ID" class="inBox" />
         <lable for="" class="text">Name</lable>
-        <input id="name" type="text" placeholder="enter name" class="inBox">
+        <input id="name" type="text" placeholder="enter name" class="inBox" />
         <lable for="" class="text">Age</lable>
-        <input id="age" type="number" placeholder="enter age" class="inBox">
+        <input id="age" type="number" placeholder="enter age" class="inBox" />
+
         <lable for="" class="text">Designation : </lable>
-        <select name="" id="cate" class="inBox">
-            <option value="--">--</option>
-            <option value="Employee">Employee </option>
-            <option value="Student">Student</option>
-           
+        <select name="" id="designation" class="inBox">
+          <option value="--">--</option>
+          <option value="Employee">Employee</option>
+          <option value="Student">Student</option>
         </select>
+
         <lable for="" class="text">Priority </lable>
-         <select name="" id="cate" class="inBox">
-            <option value="--">--</option>
-            <option value="p0">p0</option>
-            <option value="p1">p1</option>
-            <option value="p2"> p2</option>
-            <option value="p3"> p3</option>
+        <select name="" id="priority" class="inBox">
+          <option value="--">--</option>
+          <option value="p0">p0</option>
+          <option value="p1">p1</option>
+          <option value="p2">p2</option>
+          <option value="p3">p3</option>
         </select>
         <lable for="" class="text">Vaccine: </lable>
-         <select name="" id="cate" class="inBox">
-            <option value="--">--</option>
-            <option value="Covishield ">Covishield </option>
-            <option value="Covaxin ">Covaxin </option>
-            <option value="Sputnik"> Sputnik</option>
-            
+        <select name="" id="vaccine" class="inBox">
+          <option value="--">--</option>
+          <option value="covishield ">Covishield</option>
+          <option value="covaxin ">Covaxin</option>
+          <option value="sputnik">Sputnik</option>
         </select>
-        <input type="submit" value="Register " id="button">
-    </form>
+        <input type="submit" value="Register " id="button" />
+      </form>
+
+      <!-- <div><button onclick="register()">Start</button></div> -->
+    </div>
+
+    <div id="right">
+      <h1>Product Info</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Unique ID:</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Designation</th>
+            <th>Priority</th>
+            <th>Vaccine</th>
+          </tr>
+        </thead>
+
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <hr />
+    <hr />
   </body>
 </html>
+
+<script>
+  document.querySelector("form").addEventListener("submit", addPersion);
+  var peopleList = JSON.parse(localStorage.getItem("totalpeopleList")) || [];
+  function addPersion(e) {
+    e.preventDefault();
+    var uid = document.getElementById("uid").value;
+    var name = document.getElementById("name").value;
+    var age = document.getElementById("age").value;
+    var designation = document.getElementById("designation").value;
+    var priority = document.getElementById("priority").value;
+    var vaccine = document.getElementById("vaccine").value;
+
+    var list = {
+      itemUid: uid,
+      itemName: name,
+      itemAge: age,
+      itemDesignation: designation,
+      itemPriority: priority,
+      itemVaccine: vaccine,
+    };
+
+    peopleList.push(list);
+    localStorage.setItem("totalpeopleList", JSON.stringify(peopleList));
+    displayItems(peopleList);
+  }
+
+  window.addEventListener("load", function () {
+    displayItems(peopleList);
+  });
+
+  function displayItems(peopleList) {
+    document.querySelector("tbody").textContent = "";
+
+    peopleList.map(function (item, index) {
+      var tr = document.createElement("tr");
+
+      var td1 = document.createElement("td");
+      td1.textContent = item.itemUid;
+
+      var td2 = document.createElement("td");
+      td2.textContent = item.itemName;
+
+      var td3 = document.createElement("td");
+      td3.textContent = item.itemAge;
+
+      var td4 = document.createElement("td");
+      td4.textContent = item.itemDesignation;
+
+      var td5 = document.createElement("td");
+      td5.textContent = item.itemPriority;
+
+      var td6 = document.createElement("td");
+      td6.textContent = item.itemVaccine;
+
+      var td7 = document.createElement("td");
+      td7.innerHTML = "<button>Delete</button>";
+      td7.addEventListener("click", function () {
+        makeDelete();
+      });
+
+      tr.append(td1, td2, td3, td4, td5, td6, td7);
+      document.querySelector("tbody").append(tr);
+    });
+  }
+
+  function makeDelete(index) {
+    peopleList.splice(index, 1);
+    localStorage.setItem("totalpeopleList", JSON.stringify(peopleList));
+    displayItems(peopleList);
+  }
+</script>

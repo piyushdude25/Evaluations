@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vaccination Alert System</title>
+  </head>
+
+  <body>
+    <h1>Vaccination System</h1>
+    <div><label for="name">Name</label></div>
+    <div><input type="text" id="name" /></div>
+    <div><button onclick="register()">Register</button></div>
+  </body>
+</html>
+
+<script>
+  let queue = ["piyu", "ramu", "rushi", "arun"];
+  let vaccine = Math.floor(Math.random() * 7); //console.log(vaccine);
+
+  function register() {
+    let name = document.getElementById("name").value;
+    console.log(name);
+
+    let message = `${name} your registration is done, wait for your turn`;
+
+    alert(message);
+    queue.push(name);
+
+    var myPromise = new Promise(function (resolve, reject) {
+      setInterval(function () {
+        if (queue[0] === name) {
+          resolve(`${name}, its your turn now`);
+        }
+      }, 1000);
+    });
+
+    myPromise.then(function (res) {
+      alert(res);
+    });
+    //   .catch(alert("no vaccine"));
+  }
+
+  function startVaccination() {
+    queue.shift();
+    vaccine--;
+    console.log(vaccine);
+    if (queue.length === 0) {
+      clearInterval(id);
+    }
+    console.log(queue);
+  }
+
+  var id = setInterval(startVaccination, 3000);
+</script>
